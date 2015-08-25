@@ -2026,6 +2026,7 @@ static void accumulate_steal_time(struct kvm_vcpu *vcpu)
 	delta = current->sched_info.run_delay - vcpu->arch.st.last_steal;
 	vcpu->arch.st.last_steal = current->sched_info.run_delay;
 	vcpu->arch.st.accum_steal = delta;
+	printk(KERN_EMERG "STEAL TIME:%llu", delta)
 }
 
 static void record_steal_time(struct kvm_vcpu *vcpu)
