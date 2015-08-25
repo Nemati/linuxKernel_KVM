@@ -2261,6 +2261,7 @@ static long kvm_vcpu_ioctl(struct file *filp,
 		return r;
 	switch (ioctl) {
 	case KVM_RUN:
+		printk(KERN_EMERG "VM RUN");
 		r = -EINVAL;
 		if (arg)
 			goto out;
@@ -2279,7 +2280,7 @@ static long kvm_vcpu_ioctl(struct file *filp,
 		break;
 	case KVM_GET_REGS: {
 		struct kvm_regs *kvm_regs;
-
+		printk(KERN_EMERG "KVM GET REGS");
 		r = -ENOMEM;
 		kvm_regs = kzalloc(sizeof(struct kvm_regs), GFP_KERNEL);
 		if (!kvm_regs)
@@ -2297,7 +2298,7 @@ out_free1:
 	}
 	case KVM_SET_REGS: {
 		struct kvm_regs *kvm_regs;
-
+		printk(KERN_EMERG "KVM SET REGS");
 		r = -ENOMEM;
 		kvm_regs = memdup_user(argp, sizeof(*kvm_regs));
 		if (IS_ERR(kvm_regs)) {
@@ -2309,6 +2310,7 @@ out_free1:
 		break;
 	}
 	case KVM_GET_SREGS: {
+		printk(KERN_EMERG "KVM GET SREGS");
 		kvm_sregs = kzalloc(sizeof(struct kvm_sregs), GFP_KERNEL);
 		r = -ENOMEM;
 		if (!kvm_sregs)
@@ -2323,6 +2325,7 @@ out_free1:
 		break;
 	}
 	case KVM_SET_SREGS: {
+		printk(KERN_EMERG "KVM SET SREGS");
 		kvm_sregs = memdup_user(argp, sizeof(*kvm_sregs));
 		if (IS_ERR(kvm_sregs)) {
 			r = PTR_ERR(kvm_sregs);
@@ -2333,6 +2336,7 @@ out_free1:
 		break;
 	}
 	case KVM_GET_MP_STATE: {
+		printk(KERN_EMERG "KVM MP STATE");
 		struct kvm_mp_state mp_state;
 
 		r = kvm_arch_vcpu_ioctl_get_mpstate(vcpu, &mp_state);
@@ -2345,6 +2349,7 @@ out_free1:
 		break;
 	}
 	case KVM_SET_MP_STATE: {
+		printk(KERN_EMERG "KVM SET MP STATE");
 		struct kvm_mp_state mp_state;
 
 		r = -EFAULT;
@@ -2354,6 +2359,7 @@ out_free1:
 		break;
 	}
 	case KVM_TRANSLATE: {
+		printk(KERN_EMERG "KVM TRANSLATE");
 		struct kvm_translation tr;
 
 		r = -EFAULT;
@@ -2369,6 +2375,7 @@ out_free1:
 		break;
 	}
 	case KVM_SET_GUEST_DEBUG: {
+		printk(KERN_EMERG "KVM SET GUEST DEBUG");
 		struct kvm_guest_debug dbg;
 
 		r = -EFAULT;
@@ -2378,6 +2385,7 @@ out_free1:
 		break;
 	}
 	case KVM_SET_SIGNAL_MASK: {
+		printk(KERN_EMERG "KVM SET SIGNAL MASK");
 		struct kvm_signal_mask __user *sigmask_arg = argp;
 		struct kvm_signal_mask kvm_sigmask;
 		sigset_t sigset, *p;
@@ -2401,6 +2409,7 @@ out_free1:
 		break;
 	}
 	case KVM_GET_FPU: {
+		printk(KERN_EMERG "KVM GET FPU");
 		fpu = kzalloc(sizeof(struct kvm_fpu), GFP_KERNEL);
 		r = -ENOMEM;
 		if (!fpu)
@@ -2415,6 +2424,7 @@ out_free1:
 		break;
 	}
 	case KVM_SET_FPU: {
+		printk(KERN_EMERG "KVM SET FPU");
 		fpu = memdup_user(argp, sizeof(*fpu));
 		if (IS_ERR(fpu)) {
 			r = PTR_ERR(fpu);
@@ -2447,6 +2457,7 @@ static long kvm_vcpu_compat_ioctl(struct file *filp,
 
 	switch (ioctl) {
 	case KVM_SET_SIGNAL_MASK: {
+		printk(KERN_EMERG "KVM SET SIGNAL MASK");
 		struct kvm_signal_mask __user *sigmask_arg = argp;
 		struct kvm_signal_mask kvm_sigmask;
 		compat_sigset_t csigset;
@@ -2502,10 +2513,13 @@ static long kvm_device_ioctl(struct file *filp, unsigned int ioctl,
 
 	switch (ioctl) {
 	case KVM_SET_DEVICE_ATTR:
+		printk(KERN_EMERG "KVM SET DEVICE ATTR");
 		return kvm_device_ioctl_attr(dev, dev->ops->set_attr, arg);
 	case KVM_GET_DEVICE_ATTR:
+		printk(KERN_EMERG "KVM GET DEVICE ATTR");
 		return kvm_device_ioctl_attr(dev, dev->ops->get_attr, arg);
 	case KVM_HAS_DEVICE_ATTR:
+		printk(KERN_EMERG "KVM HAS DEVICE ATTR");
 		return kvm_device_ioctl_attr(dev, dev->ops->has_attr, arg);
 	default:
 		if (dev->ops->ioctl)
@@ -2656,9 +2670,11 @@ static long kvm_vm_ioctl(struct file *filp,
 		return -EIO;
 	switch (ioctl) {
 	case KVM_CREATE_VCPU:
+		printk(KERN_EMERG "KVM CREATE VCPU");
 		r = kvm_vm_ioctl_create_vcpu(kvm, arg);
 		break;
 	case KVM_SET_USER_MEMORY_REGION: {
+		printk(KERN_EMERG "KVM SET USER MEMORY REGION");
 		struct kvm_userspace_memory_region kvm_userspace_mem;
 
 		r = -EFAULT;
@@ -2670,6 +2686,7 @@ static long kvm_vm_ioctl(struct file *filp,
 		break;
 	}
 	case KVM_GET_DIRTY_LOG: {
+		printk(KERN_EMERG "KVM GET DIRTY LOG");
 		struct kvm_dirty_log log;
 
 		r = -EFAULT;
@@ -2680,6 +2697,7 @@ static long kvm_vm_ioctl(struct file *filp,
 	}
 #ifdef KVM_COALESCED_MMIO_PAGE_OFFSET
 	case KVM_REGISTER_COALESCED_MMIO: {
+
 		struct kvm_coalesced_mmio_zone zone;
 
 		r = -EFAULT;
@@ -2699,6 +2717,7 @@ static long kvm_vm_ioctl(struct file *filp,
 	}
 #endif
 	case KVM_IRQFD: {
+		printk(KERN_EMERG "KVM IRQFD");
 		struct kvm_irqfd data;
 
 		r = -EFAULT;
@@ -2708,6 +2727,7 @@ static long kvm_vm_ioctl(struct file *filp,
 		break;
 	}
 	case KVM_IOEVENTFD: {
+		printk(KERN_EMERG "KVM IOEVENTFD");
 		struct kvm_ioeventfd data;
 
 		r = -EFAULT;
@@ -2793,6 +2813,7 @@ out_free_irq_routing:
 	}
 #endif /* CONFIG_HAVE_KVM_IRQ_ROUTING */
 	case KVM_CREATE_DEVICE: {
+		printk(KERN_EMERG "KVM CREATE DEVICE");
 		struct kvm_create_device cd;
 
 		r = -EFAULT;
@@ -2811,6 +2832,7 @@ out_free_irq_routing:
 		break;
 	}
 	case KVM_CHECK_EXTENSION:
+		printk(KERN_EMERG "KVM CHECK EXTENTION");
 		r = kvm_vm_ioctl_check_extension_generic(kvm, arg);
 		break;
 	default:
@@ -2902,17 +2924,21 @@ static long kvm_dev_ioctl(struct file *filp,
 
 	switch (ioctl) {
 	case KVM_GET_API_VERSION:
+		printk(KERN_EMERG "KVM GET API VERSION");
 		if (arg)
 			goto out;
 		r = KVM_API_VERSION;
 		break;
 	case KVM_CREATE_VM:
+		printk(KERN_EMERG "KVM CREATE VM");
 		r = kvm_dev_ioctl_create_vm(arg);
 		break;
 	case KVM_CHECK_EXTENSION:
+		printk(KERN_EMERG "KVM CHECK EXTENTION");
 		r = kvm_vm_ioctl_check_extension_generic(NULL, arg);
 		break;
 	case KVM_GET_VCPU_MMAP_SIZE:
+		printk(KERN_EMERG "KVM GET VCPU MMAP SIZE");
 		if (arg)
 			goto out;
 		r = PAGE_SIZE;     /* struct kvm_run */
